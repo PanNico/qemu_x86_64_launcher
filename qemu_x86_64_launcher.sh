@@ -1,5 +1,10 @@
 #!/bin/bash
 # https://www.willhaley.com/blog/debian-arm-qemu/
+#
+# This script assign to interfaces to the vm. One is connected directly to the "main"
+# interface if the hostmachine. The tap interface instead is to ssh into the machine 
+# and having a kind of lan interface (As if it were a router).
+# To access it, on the hostmachine run: ip route add <netspace>/24 dev tap0
 
 SCRIPT_NAME=$(basename $0)
 DO_INSTALL=false
