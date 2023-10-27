@@ -69,6 +69,7 @@ function validate_args() {
       check_null_arg "$2" "<disk>"
       HD="$2"
       local qemu_rootfs_disk="-drive file=${HD},format=raw,index=0,media=disk"
+      # QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk}" 
       QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk}" 
       shift 2
       ;;
@@ -132,7 +133,7 @@ function validate_args() {
       qemu-img create $HD ${DISK_SIZE}G
       mkfs.ext4 $HD
       local qemu_rootfs_disk="-drive file=${HD},format=raw,index=0,media=disk"
-      QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk}" 
+      QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk} -append 'root=/dev/sda1 console=ttyS0'" 
     else
       echo "Aborting..."
       exit 0
@@ -141,7 +142,12 @@ function validate_args() {
 
 }
 function run() {
-  $QEMU $QEMU_COMMON_ARGS
+
+  if $DO_INSTALL; then
+    $QEMU $QEMU_COMMON_ARGS
+  else
+    $QEMU $QEMU_COMMON_ARGS -append 'root=/dev/sda1'
+  fi
 }
 
 validate_args $@
