@@ -133,7 +133,7 @@ function validate_args() {
       qemu-img create $HD ${DISK_SIZE}G
       mkfs.ext4 $HD
       local qemu_rootfs_disk="-drive file=${HD},format=raw,index=0,media=disk"
-      QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk} -append 'root=/dev/sda1 console=ttyS0'" 
+      QEMU_COMMON_ARGS="${QEMU_COMMON_ARGS} ${qemu_rootfs_disk}" 
     else
       echo "Aborting..."
       exit 0
