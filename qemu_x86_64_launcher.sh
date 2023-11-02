@@ -39,32 +39,13 @@ function check_null_arg() {
 }
 
 function get_list_of_disks() {
-  local list=""
+  local list=()
  
-  if [[ -z $1 ]]; then
-    echo
-    return
-  fi
-
-  if ! echo ${1} | grep "," &> /dev/null; then
-    echo $1
-    return
-  fi
-
-  local counter=1
- 
-  while true; do
-    local disk=$(echo $1 | cut -d, -f${counter})
-
-    if [[ -z $disk ]]; then
-      break
-    fi
-
-    list="${list} ${disk}"
-    counter=$((counter+1))
+  for disk in $(echo $1 | sed -e "s/,/ /g"); do
+    list+=($disk)
   done
 
-  echo $list
+  echo ${list[@]}
 }
 
 function validate_args() {
